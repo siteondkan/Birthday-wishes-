@@ -3,13 +3,47 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Happy Birthday Achacha</title>
+<title>Surprise for Achacha</title>
 <style>
     * {margin: 0; padding: 0; box-sizing: border-box;}
-  body {
-    background: #000;
+  
+  /* FIRST WHITE SCREEN */
+  #startScreen {
+    background: #ffffff;
     min-height: 100vh;
     display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  #startBtn {
+    background: #ff006e;
+    color: #fff;
+    border: none;
+    padding: 20px 50px;
+    border-radius: 50px;
+    font-size: 22px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(255, 0, 110, 0.4);
+    transition: 0.3s;
+  }
+  #startBtn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 15px 40px rgba(255, 0, 110, 0.6);
+  }
+  #startText {
+    color: #333;
+    font-size: 20px;
+    margin-bottom: 30px;
+    font-weight: 600;
+  }
+
+  /* SECOND BLACK BIRTHDAY SCREEN */
+  #bdayScreen {
+    background: #000;
+    min-height: 100vh;
+    display: none;
     justify-content: center;
     align-items: center;
     font-family: 'Segoe UI', sans-serif;
@@ -25,6 +59,11 @@
     padding: 30px 25px;
     box-shadow: 0 0 40px rgba(255, 214, 10, 0.4);
     max-width: 450px;
+    animation: fadeIn 1s ease-in;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
   }
   .photo {
     width: 150px;
@@ -35,7 +74,6 @@
     margin: 0 auto 15px;
     box-shadow: 0 0 30px rgba(255, 214, 10, 0.6);
     animation: pulse 2s ease-in-out infinite;
-    filter: contrast(1.15) brightness(1.1) saturate(1.1);
   }
   @keyframes pulse {
     0%, 100% { transform: scale(1); }
@@ -76,23 +114,6 @@
     margin: 12px 0;
     line-height: 1.6;
   }
-  button {
-    background: #ffd60a;
-    color: #000;
-    border: none;
-    padding: 14px 35px;
-    border-radius: 30px;
-    font-size: 17px;
-    font-weight: bold;
-    margin-top: 20px;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-  button:hover {
-    background: #fff;
-    transform: scale(1.1);
-    box-shadow: 0 0 25px #ffd60a;
-  }
   .crackers {
     position: fixed;
     top: 0;
@@ -103,28 +124,66 @@
   }
   .cracker {
     position: absolute;
-    font-size: 25px;
+    font-size: 30px;
     animation: blast 3s linear infinite;
   }
   @keyframes blast {
-    0% { transform: translateY(-10vh) scale(0); opacity: 1; }
-    50% { transform: translateY(50vh) scale(1.5); opacity: 1; }
-    100% { transform: translateY(110vh) scale(0); opacity: 0; }
+    0% { transform: translateY(-10vh) scale(0) rotate(0deg); opacity: 1; }
+    50% { transform: translateY(50vh) scale(1.5) rotate(180deg); opacity: 1; }
+    100% { transform: translateY(110vh) scale(0) rotate(360deg); opacity: 0; }
   }
 </style>
 </head>
 <body>
-<div class="crackers" id="crackers"></div>
 
-<div class="container">
-  <img src="daddy.jpg" alt="Achacha" class="photo">
+<!-- FIRST WHITE SCREEN WITH BUTTON -->
+<div id="startScreen">
+  <p id="startText">Achacha nu oru surprise undu 🎁</p>
+  <button id="startBtn" onclick="showBirthday()">Click Cheyyu 🎉</button>
+</div>
+
+<!-- SECOND BLACK BIRTHDAY SCREEN -->
+<div id="bdayScreen">
+  <div class="crackers" id="crackers"></div>
   
-  <h1>Happy Birthday Achacha</h1>
-  <div class="name">SIJU GEORGE</div>
-  
-  <img src="https://i.ibb.co/3fHwXkJ/birthday-cake-hd.png" alt="Cake" class="cake-img">
-  
-  <p class="wish">Ente ponnu achacha nu ❤️</p>
-  <p class="wish">Ini ulla ella divasavum santhosham mathram 🙏</p>
-  <p class="wish">Love you Achacha 💙</p>
-   
+  <div class="container">
+    <img src="daddy.jpg" alt="Achacha" class="photo">
+    
+    <h1>Happy Birthday Achacha</h1>
+    <div class="name">SIJU GEORGE</div>
+    
+    <img src="https://i.ibb.co/3fHwXkJ/birthday-cake-hd.png" alt="Cake" class="cake-img">
+    
+    <p class="wish">Ente ponnu achacha nu ❤️</p>
+    <p class="wish">Ini ulla ella divasavum santhosham mathram 🙏</p>
+    <p class="wish">Love you Achacha 💙</p>
+  </div>
+</div>
+
+<script>
+function showBirthday() {
+  document.getElementById('startScreen').style.display = 'none';
+  document.getElementById('bdayScreen').style.display = 'flex';
+  startCrackers();
+}
+
+function createCracker() {
+  const crackers = ['🎆','🚀','✨','🎇','💥','🌟','🎉'];
+  const cracker = document.createElement('div');
+  cracker.classList.add('cracker');
+  cracker.innerHTML = crackers[Math.floor(Math.random() * crackers.length)];
+  cracker.style.left = Math.random() * 100 + 'vw';
+  cracker.style.animationDuration = Math.random() * 2 + 2 + 's';
+  document.getElementById('crackers').appendChild(cracker);
+  setTimeout(() => cracker.remove(), 4000);
+}
+
+function startCrackers() {
+  setInterval(createCracker, 150);
+  for(let i=0; i<50; i++) {
+    setTimeout(createCracker, i * 50);
+  }
+}
+</script>
+</body>
+</html>
