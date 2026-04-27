@@ -7,7 +7,6 @@
 <style>
     * {margin: 0; padding: 0; box-sizing: border-box;}
   
-  /* FIRST WHITE SCREEN */
   #startScreen {
     background: #ffffff;
     min-height: 100vh;
@@ -26,11 +25,6 @@
     font-weight: bold;
     cursor: pointer;
     box-shadow: 0 10px 30px rgba(255, 0, 110, 0.4);
-    transition: 0.3s;
-  }
-  #startBtn:hover {
-    transform: scale(1.1);
-    box-shadow: 0 15px 40px rgba(255, 0, 110, 0.6);
   }
   #startText {
     color: #333;
@@ -39,7 +33,6 @@
     font-weight: 600;
   }
 
-  /* SECOND BLACK BIRTHDAY SCREEN */
   #bdayScreen {
     background: #000;
     min-height: 100vh;
@@ -74,6 +67,7 @@
     margin: 0 auto 15px;
     box-shadow: 0 0 30px rgba(255, 214, 10, 0.6);
     animation: pulse 2s ease-in-out infinite;
+    background: #333; /* Photo load aayillel grey kanikkum */
   }
   @keyframes pulse {
     0%, 100% { transform: scale(1); }
@@ -84,11 +78,6 @@
     font-size: 34px;
     text-shadow: 0 0 20px #ffd60a;
     margin-bottom: 10px;
-    animation: glow 1.5s ease-in-out infinite;
-  }
-  @keyframes glow {
-    0%, 100% { text-shadow: 0 0 20px #ffd60a; }
-    50% { text-shadow: 0 0 35px #ffd60a; }
   }
   .name {
     color: #00b4d8;
@@ -99,7 +88,6 @@
   }
   .cake-img {
     width: 200px;
-    height: auto;
     margin: 15px 0;
     animation: bounce 1.5s ease-in-out infinite;
     filter: drop-shadow(0 0 15px #ff006e);
@@ -121,6 +109,7 @@
     width: 100%;
     height: 100%;
     pointer-events: none;
+    z-index: 5;
   }
   .cracker {
     position: absolute;
@@ -132,27 +121,38 @@
     50% { transform: translateY(50vh) scale(1.5) rotate(180deg); opacity: 1; }
     100% { transform: translateY(110vh) scale(0) rotate(360deg); opacity: 0; }
   }
+  .firework {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    animation: fireworkBlast 1s ease-out forwards;
+    pointer-events: none;
+    z-index: 20;
+  }
+  @keyframes fireworkBlast {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(30) translate(var(--x), var(--y)); opacity: 0; }
+  }
 </style>
 </head>
 <body>
 
-<!-- FIRST WHITE SCREEN WITH BUTTON -->
 <div id="startScreen">
   <p id="startText">Achacha nu oru surprise undu 🎁</p>
   <button id="startBtn" onclick="showBirthday()">Click Cheyyu 🎉</button>
 </div>
 
-<!-- SECOND BLACK BIRTHDAY SCREEN -->
 <div id="bdayScreen">
   <div class="crackers" id="crackers"></div>
   
   <div class="container">
     <img src="daddy.jpg" alt="Achacha" class="photo">
-    
     <h1>Happy Birthday Achacha</h1>
     <div class="name">SIJU GEORGE</div>
     
-    <img src="https://i.ibb.co/3fHwXkJ/birthday-cake-hd.png" alt="Cake" class="cake-img">
+    <!-- PUTHIYA WORKING CAKE IMAGE -->
+    <img src="https://png.pngtree.com/png-vector/20230304/ourmid/pngtree-birthday-cake-png-image_6627878.png" alt="Cake" class="cake-img">
     
     <p class="wish">Ente ponnu achacha nu ❤️</p>
     <p class="wish">Ini ulla ella divasavum santhosham mathram 🙏</p>
@@ -160,11 +160,33 @@
   </div>
 </div>
 
+<audio id="boomSound" preload="auto">
+  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_2b2e1b8d77.mp3" type="audio/mpeg">
+</audio>
+
 <script>
 function showBirthday() {
   document.getElementById('startScreen').style.display = 'none';
   document.getElementById('bdayScreen').style.display = 'flex';
+  document.getElementById('boomSound').play();
+  createBigFirework();
   startCrackers();
+}
+
+function createBigFirework() {
+  const colors = ['#ff006e', '#ffd60a', '#00b4d8', '#06ffa5', '#ff9e00'];
+  for(let i = 0; i < 80; i++) {
+    const firework = document.createElement('div');
+    firework.classList.add('firework');
+    firework.style.left = '50%';
+    firework.style.top = '50%';
+    firework.style.background = colors[Math.floor(Math.random() * colors.length)];
+    firework.style.setProperty('--x', (Math.random() - 0.5) * 400 + 'px');
+    firework.style.setProperty('--y', (Math.random() - 0.5) * 400 + 'px');
+    firework.style.animationDelay = Math.random() * 0.3 + 's';
+    document.body.appendChild(firework);
+    setTimeout(() => firework.remove(), 1000);
+  }
 }
 
 function createCracker() {
